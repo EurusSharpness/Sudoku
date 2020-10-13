@@ -17,8 +17,9 @@ namespace Soduku
         public static int Easy = 0, Medium = 1, Hard = 2;
         int[,] Matrix;
         Cell[,] PlayerMatrix;
-        int Level = Hard;
+        public static int Level = Medium;
         Point Clicked;
+        bool Win;
         public Game()
         {
             Clicked = new Point(0, 0);
@@ -29,7 +30,6 @@ namespace Soduku
                 for (int j = 0; j < 9; j++)
                     PlayerMatrix[i, j] = new Cell();
         }
-        public void SetLevel(int Level) => this.Level = Level;
         public void FillTheBoard()
         {
             List<int>[] Rows, Colums, Square;
@@ -84,12 +84,14 @@ namespace Soduku
 
         public void Draw(Graphics g)
         {
+            Win = CheckWin();
             Brush brush = Brushes.Black;
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
                     string s = PlayerMatrix[i, j].Value.ToString();
+                    FontStyle fontStyle;
                     if (PlayerMatrix[i, j].Value == 0)
                         s = "";
                     else if (PlayerMatrix[i, j].Value == PlayerMatrix[Clicked.X, Clicked.Y].Value)
@@ -99,11 +101,12 @@ namespace Soduku
                     }
                     else
                         brush = Brushes.Black;
-
+                    fontStyle = (PlayerMatrix[i, j].Modify) ? FontStyle.Regular : FontStyle.Bold;
                     g.DrawString(s,
-                        new Font("", 15), brush, new Point(20 + 50 * i, 20 + 50 * j));
+                        new Font("", 15,fontStyle), brush, new Point(20 + 50 * i, 20 + 50 * j));
                 }
             }
+            g.DrawString(Win.ToString(), new Font("",16), Brushes.Red, new PointF(455,100));
         }
 
         public void KeyDown(KeyEventArgs e)

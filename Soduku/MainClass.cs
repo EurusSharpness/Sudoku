@@ -13,35 +13,46 @@ namespace Soduku
         BackGround bg;
         Point Clicked;
         Game game;
-        public MainClass()
+        MainMenu mainMenu;
+        bool playing = false;
+        public MainClass(Control.ControlCollection controlCollection)
         {
             Clicked = new Point(0, 0);
             bg = new BackGround();
             game = new Game();
-            game.FillTheBoard();
+            mainMenu = new MainMenu(controlCollection);
         }
-
         public void Click(Point p)
         {
             if (p.X > 50 * 9 || p.Y > 50 * 9 || p.X < 0 || p.Y < 0)
                 return;
-            Clicked.X = p.X / 50;
-            Clicked.Y = p.Y / 50;
+            Clicked.X = (p.X / 50 > 8) ? 8 : p.X / 50;
+            Clicked.Y = (p.Y / 50 > 8) ? 8 : p.Y / 50;
             game.OnClick(Clicked);
         }
         public void dd(KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Down)
-                if (Clicked.Y < 8)
-                    Clicked.Y++;
             game.KeyDown(e);
         }
 
         public void Draw(Graphics g)
         {
-            g.FillRectangle(Brushes.LightGray, 50 * Clicked.X, 50 * Clicked.Y, 50, 50);
-            game.Draw(g);
-            bg.Draw(g);
+            mainMenu.Draw(g);
+            if (mainMenu.getPage() < MainMenu.MenuPages.GamePage)
+            {
+                playing = false;
+            }
+            else
+            {
+                if (!playing)
+                {
+                    game.FillTheBoard();
+                    playing = true;
+                }
+                g.FillRectangle(Brushes.LightGray, 50 * Clicked.X, 50 * Clicked.Y, 50, 50);
+                game.Draw(g);
+                bg.Draw(g);
+            }
         }
     }
 }

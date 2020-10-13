@@ -8,3 +8,13 @@ C:\Users\samh8\source\repos\Soduku\Soduku\obj\Debug\Soduku.csproj.GenerateResour
 C:\Users\samh8\source\repos\Soduku\Soduku\obj\Debug\Soduku.csproj.CoreCompileInputs.cache
 C:\Users\samh8\source\repos\Soduku\Soduku\obj\Debug\Soduku.exe
 C:\Users\samh8\source\repos\Soduku\Soduku\obj\Debug\Soduku.pdb
+C:\Users\samh8\Source\Repos\Sudoku\Soduku\bin\Debug\Soduku.exe.config
+C:\Users\samh8\Source\Repos\Sudoku\Soduku\bin\Debug\Soduku.exe
+C:\Users\samh8\Source\Repos\Sudoku\Soduku\bin\Debug\Soduku.pdb
+C:\Users\samh8\Source\Repos\Sudoku\Soduku\obj\Debug\Soduku.csprojAssemblyReference.cache
+C:\Users\samh8\Source\Repos\Sudoku\Soduku\obj\Debug\Soduku.Form1.resources
+C:\Users\samh8\Source\Repos\Sudoku\Soduku\obj\Debug\Soduku.Properties.Resources.resources
+C:\Users\samh8\Source\Repos\Sudoku\Soduku\obj\Debug\Soduku.csproj.GenerateResource.cache
+C:\Users\samh8\Source\Repos\Sudoku\Soduku\obj\Debug\Soduku.csproj.CoreCompileInputs.cache
+C:\Users\samh8\Source\Repos\Sudoku\Soduku\obj\Debug\Soduku.exe
+C:\Users\samh8\Source\Repos\Sudoku\Soduku\obj\Debug\Soduku.pdb

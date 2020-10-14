@@ -10,25 +10,24 @@ namespace Soduku
 {
     class Game
     {
-
         // 1: Random
         // 2: NO INTERS
         // 3: 
-        public static int Easy = 0, Medium = 1, Hard = 2;
+        public enum Levels { Easy, Medium, Hard }
+        enum Difficulty {Easy = 85, Medium = 45, Hard = 35}
+
         int[,] Matrix;
         Cell[,] PlayerMatrix;
-        public static int Level = Medium;
+
+        public static Levels Level;
+
         Point Clicked;
-        bool Win;
+
+
+        int[] CompleteNumbers;
         public Game()
         {
-            Clicked = new Point(0, 0);
-            Matrix = new int[9, 9];
-            PlayerMatrix = new Cell[9, 9];
-
-            for (int i = 0; i < 9; i++)
-                for (int j = 0; j < 9; j++)
-                    PlayerMatrix[i, j] = new Cell();
+            Initialize();
         }
         public void FillTheBoard()
         {
@@ -70,12 +69,15 @@ namespace Soduku
 
         private void PlayerBoard()
         {
-            int pro = (Level == Easy) ? 55 : (Level == Medium) ? 45 : 35;
+            Difficulty pro = (Level == Levels.Easy) ? Difficulty.Easy : (Level == Levels.Medium) ? Difficulty.Medium : Difficulty.Hard;
             Random r = new Random();
             for (int i = 0; i < 9; i++)
                 for (int j = 0; j < 9; j++)
-                    if ((r.Next(0, 101) <= pro))
+                    if ((r.Next(0, 101) <= (int)pro))
+                    {
                         PlayerMatrix[i, j] = new Cell(Matrix[i, j], false);
+                        CompleteNumbers[Matrix[i, j] - 1]++;
+                    }
         }
 
         private int GetSquareNumber(int i, int j) => (i / 3) * 3 + j / 3;
@@ -84,7 +86,6 @@ namespace Soduku
 
         public void Draw(Graphics g)
         {
-            Win = CheckWin();
             Brush brush = Brushes.Black;
             for (int i = 0; i < 9; i++)
             {
@@ -97,8 +98,13 @@ namespace Soduku
                     else if (PlayerMatrix[i, j].Value == PlayerMatrix[Clicked.X, Clicked.Y].Value)
                     {
                         g.FillRectangle((Clicked.X == i && Clicked.Y == j) ? Brushes.DarkGray : Brushes.LightGray, 50 * i, 50 * j, 50, 50);
-                        brush = Brushes.Blue;
+                        if (CompleteNumbers[PlayerMatrix[i, j].Value - 1] != 9)
+                            brush = Brushes.Blue;
+                        else
+                            brush = Brushes.Gold;
                     }
+                    else if (CompleteNumbers[PlayerMatrix[i, j].Value - 1] == 9)
+                        brush = Brushes.Gold;
                     else
                         brush = Brushes.Black;
                     fontStyle = (PlayerMatrix[i, j].Modify) ? FontStyle.Regular : FontStyle.Bold;
@@ -106,7 +112,17 @@ namespace Soduku
                         new Font("", 15,fontStyle), brush, new Point(20 + 50 * i, 20 + 50 * j));
                 }
             }
-            g.DrawString(Win.ToString(), new Font("",16), Brushes.Red, new PointF(455,100));
+        }
+
+        public void Initialize()
+        {
+            Clicked = new Point(0, 0);
+            Matrix = new int[9, 9];
+            PlayerMatrix = new Cell[9, 9];
+            CompleteNumbers = new int[9];
+            for (int i = 0; i < 9; i++)
+                for (int j = 0; j < 9; j++)
+                    PlayerMatrix[i, j] = new Cell();
         }
 
         public void KeyDown(KeyEventArgs e)
@@ -126,15 +142,27 @@ namespace Soduku
                 return;
 
             if (PlayerMatrix[Clicked.X, Clicked.Y].Modify)
+            {
+
+                if (number == -5)
+                {
+                    if (PlayerMatrix[Clicked.X, Clicked.Y].Value == Matrix[Clicked.X, Clicked.Y])
+                        CompleteNumbers[PlayerMatrix[Clicked.X, Clicked.Y].Value - 1]--;
+                }
+                else if (Matrix[Clicked.X, Clicked.Y] == number)
+                    CompleteNumbers[number - 1]++;
+
+
                 PlayerMatrix[Clicked.X, Clicked.Y].Value = (number == -5) ? 0 : number;
+            }
+            
         }
 
-        private bool CheckWin()
+        public bool CheckWin()
         {
             for (int i = 0; i < 9; i++)
-                for (int j = 0; j < 9; j++)
-                    if (PlayerMatrix[i, j].Value != Matrix[i, j])
-                        return false;
+                if (CompleteNumbers[i] != 9)
+                    return false;
             return true;
         }
 

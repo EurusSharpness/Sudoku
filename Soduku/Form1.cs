@@ -43,7 +43,7 @@ namespace Soduku
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            Main.dd(e);
+            Main.KeyBoard(e);
             e.SuppressKeyPress = true;
         }
     }

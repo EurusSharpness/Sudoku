@@ -13,7 +13,7 @@ namespace Soduku
         public enum MenuPages { MenuPage, HelpPage, LevelPage, GamePage }
         Button Start, Help, Back, Easy, Medium, Hard;
 
-        MenuPages page = MenuPages.MenuPage;
+        public static MenuPages page = MenuPages.MenuPage;
 
         Control.ControlCollection controlCollection;
 
@@ -114,7 +114,7 @@ namespace Soduku
             controlCollection.Add(Easy);
             Easy.MouseEnter += (s, e) => { Easy.ForeColor = Color.Red; };
             Easy.MouseLeave += (s, e) => { Easy.ForeColor = Color.Blue; };
-            Easy.MouseClick += (s, e) => { page = MenuPages.GamePage; Game.Level = Game.Easy; };
+            Easy.MouseClick += (s, e) => { page = MenuPages.GamePage; Game.Level = Game.Levels.Easy; };
 
             Medium.Text = "Medium"; // EHMAZING ARROW
             Medium.Location = new Point(200, 200);
@@ -129,7 +129,7 @@ namespace Soduku
             controlCollection.Add(Medium);
             Medium.MouseEnter += (s, e) => { Medium.ForeColor = Color.Red; };
             Medium.MouseLeave += (s, e) => { Medium.ForeColor = Color.Blue; };
-            Medium.MouseClick += (s, e) => { page = MenuPages.GamePage; Game.Level = Game.Medium; };
+            Medium.MouseClick += (s, e) => { page = MenuPages.GamePage; Game.Level = Game.Levels.Medium; };
 
             Hard.Text = "Hard"; // EHMAZING ARROW
             Hard.Location = new Point(200, 250);
@@ -144,7 +144,7 @@ namespace Soduku
             controlCollection.Add(Hard);
             Hard.MouseEnter += (s, e) => { Hard.ForeColor = Color.Red; };
             Hard.MouseLeave += (s, e) => { Hard.ForeColor = Color.Blue; };
-            Hard.MouseClick += (s, e) => { page = MenuPages.GamePage; Game.Level = Game.Hard; };
+            Hard.MouseClick += (s, e) => { page = MenuPages.GamePage; Game.Level = Game.Levels.Hard; };
 
 
 
@@ -158,6 +158,11 @@ namespace Soduku
 
         public void Draw(Graphics g)
         {
+            if (page != MenuPages.GamePage)
+            {
+                if(!Back.Enabled)
+                    Back.Enabled = Start.Enabled = Help.Enabled = Easy.Enabled = Medium.Enabled = Hard.Enabled = true;
+            }
             if (page == MenuPages.MenuPage)
             {
                 Start.Visible = Help.Visible = true;
